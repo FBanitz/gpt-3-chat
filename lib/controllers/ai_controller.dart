@@ -13,7 +13,7 @@ class AIController {
   AIController({
     this.model = "text-davinci-003", 
     this.defautTemperature = 0.5, 
-    this.defaultMaxTokens = 100, 
+    this.defaultMaxTokens = 256, 
     // this.defaultStop = "\n",
   });
 
@@ -36,11 +36,7 @@ class AIController {
     if (response.statusCode != 200) {
       throw Exception('Failed to load response, Error ${response.statusCode}: ${response.body}');
     }
-
-    String value = "";
-    for (dynamic choice in response.body.fromJson['choices']){
-      value += choice['text'];
-    }
-    return value;
+    
+    return response.body.fromJson['choices'][0]['text'];
   }
 }
