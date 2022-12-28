@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gpt_3_chat">
+    package="fbanitz.gpt_3_chat">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="gpt_3_chat"
-        android:name="${applicationName}"
+        android:label="GPT-3 Chat"
+        android:name="gpt_3_chat"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
