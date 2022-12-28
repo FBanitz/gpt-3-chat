@@ -1,41 +1,42 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gpt_3_chat/controllers/ai_controller.dart';
-import 'package:gpt_3_chat/models/message.dart';
+import 'package:gpt_3_chat/controllers/conversation_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
+  final scrollController = ScrollController();
   final _messageController = TextEditingController();
-  final _messages = <Message>[];
-  final _aiController = AIController();
+  final _conversationController = ConversationController();
 
   void _sendMessage() {
-    setState(() {
-      _messages.add(
-        Message(
-          sender: 'user',
-          text: _messageController.text,
-          timestamp: DateTime.now(),
-        )
-      );
-      _aiController.generateText(_messageController.text).then((response) {
-        setState(() {
-          _messages.add(
-            Message(
-              sender: 'ai',
-              text: response,
-              timestamp: DateTime.now(),
-            )
+    callback() {
+      setState(() {});
+      Future.delayed(
+        const Duration(milliseconds: 300), 
+        () {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
           );
-        });
-      });
-    });
+        },
+      );
+    }
+
+    _conversationController.sendMessage(
+      _messageController.text, 
+      callback: callback,
+    );
+
+    callback();
     _messageController.clear();
   }
 
@@ -43,25 +44,27 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat App'),
+        title: const Text('GPT-3 Chat App'),
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length,
+              controller: scrollController,
+              itemCount: _conversationController.conversation.length,
+              dragStartBehavior: DragStartBehavior.down,
               itemBuilder: (context, index) {
-                final message = _messages[index];
+                final message = _conversationController.conversation[index];
                 final isMessageFromUser = message.sender == 'user';
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.fromLTRB(isMessageFromUser ? 32 : 16 , 0, isMessageFromUser ? 16 : 32, 0),
                     child: Column(
                       crossAxisAlignment:
                         isMessageFromUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        if(!message.waiting) Text(
                           DateFormat.jm().format(message.timestamp),
                           style: TextStyle(
                             color: Colors.grey[600],
@@ -71,12 +74,20 @@ class _ChatScreenState extends State<ChatScreen> {
                         Container(
                           decoration: BoxDecoration(
                             color: isMessageFromUser
-                                ? Colors.lightBlue[100]
-                                : Colors.grey[200],
+                              ? Colors.lightBlue[100]
+                              : Colors.grey[200],
                             borderRadius: BorderRadius.circular(5),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: Text(
+                          child: message.waiting
+                          ? SizedBox(
+                            width: 50,
+                            child: JumpingDotsProgressIndicator(
+                              fontSize: 20,
+                              numberOfDots: 3,
+                            ),
+                          )
+                          : Text(
                             message.text,
                             style: const TextStyle(fontSize: 20),
                           ),
@@ -89,19 +100,27 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
+                    enabled: !_conversationController.waiting,
                     controller: _messageController,
+                    textInputAction: TextInputAction.send,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    onSubmitted:  (_) => _sendMessage(),
                     decoration: const InputDecoration(
                       hintText: 'Enter a message',
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.send),
+                  icon: Icon(
+                    Icons.send,
+                    color: _conversationController.waiting ? Colors.grey : Colors.blue,
+                  ),
                   onPressed: _sendMessage,
                 ),
               ],

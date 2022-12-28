@@ -36,7 +36,23 @@ class AIController {
     if (response.statusCode != 200) {
       throw Exception('Failed to load response, Error ${response.statusCode}: ${response.body}');
     }
+
+    String aiResponse = response.body.fromJson['choices'][0]['text'];
     
-    return response.body.fromJson['choices'][0]['text'];
+    while (
+      aiResponse.startsWith('\n') 
+      || aiResponse.startsWith(' ')
+    ) {
+      aiResponse = aiResponse.substring(1);
+    }
+
+    while (
+      aiResponse.endsWith('\n') 
+      || aiResponse.endsWith(' ')
+    ) {
+      aiResponse = aiResponse.substring(0, aiResponse.length - 1);
+    }
+
+    return aiResponse;
   }
 }
