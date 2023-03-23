@@ -11,7 +11,9 @@ No data is collected or stored by the application. Data is stored in cache local
 I am not affiliated with OpenAI in any way and I am not in any way responsible for the data processed and potentialy stored by OpenAi or any misuse of the API by the user. This is just a fun project I made for fun.
 
 ## Download 📥
-In order to use the application, you must first download the app from the [release page](https://github.com/FBanitz/gpt-3-chat/releases). The application is available for Android, Windows and Web (if you can run a web server yourself). It is not available for iOS and MacOS, as I do not have a Mac to build the app for these platforms (btw if you have a Mac and want to build the app for these platforms, feel free to do so and send me a pull request).
+In order to use the application, you must first download the app from the [**release page**](https://github.com/FBanitz/gpt-3-chat/releases).
+
+The application is available for Android, Windows and Web (if you can run a web server yourself). It is not available for iOS and MacOS, as I do not have a Mac to build the app for these platforms (btw if you have a Mac and want to build the app for these platforms, feel free to do so and send me a pull request).
 
 ## Setup 🛠
 Go to 'settings' and enter your API key. You can get one here: https://platform.openai.com/account/api-keys
