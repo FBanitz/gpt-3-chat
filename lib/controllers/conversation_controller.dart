@@ -15,7 +15,7 @@ class ConversationController {
     'total_tockens': 0,
   };
 
-  void sendMessage(String message, {Function? callback}) {
+  Future<void> sendMessage(String message, {Function? callback}) async {
     _conversation.add(Message(
       sender: user,
       text: message.cleanMessage,
@@ -34,7 +34,19 @@ class ConversationController {
     for (Message message in _conversation) {
       prompt += "${message.sender.name}: ${message.text}\n";
     }
-    _aiController.generateText(prompt, 0.5, 2048).then((response) {
+
+    late AiResponse response;
+    try {
+      response = await _aiController.generateText(prompt, 0.5, 2048);
+    } catch (e) {
+      response = AiResponse(
+        text: "Error: $e",
+        isError: true,
+        promptTokens: 0,
+        completionTokens: 0,
+        totalTokens: 0,
+      );
+    } finally {
       editLastAiMessage(response.text);
       usage['prompt_tockens'] =
           response.promptTokens + usage['prompt_tockens']!;
@@ -42,7 +54,7 @@ class ConversationController {
           response.completionTokens + usage['completion_tokens']!;
       usage['total_tockens'] = response.totalTokens + usage['total_tockens']!;
       callback?.call();
-    });
+    }
   }
 
   void delete(int index) {

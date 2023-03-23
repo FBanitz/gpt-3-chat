@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpt_3_chat/extensions/widget.dart';
+import 'package:gpt_3_chat/screens/chat_screen.dart';
+import 'package:gpt_3_chat/screens/settings_screen.dart';
 import 'package:gpt_3_chat/styles/colors.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -30,7 +32,12 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           onTap: () {
-            if (landscape) { Navigator.pop(context);}
+            if (ModalRoute.of(context)!.canPop) {
+              Navigator.pop(context);
+            }
+            if (!landscape && ModalRoute.of(context)!.canPop) {
+              Navigator.pop(context);
+            }
           },
         ),
         ListTile(
@@ -43,7 +50,18 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           onTap: () {
-            if (landscape) {Navigator.pop(context);}
+            if (ModalRoute.of(context)!.canPop) {
+              Navigator.pop(context);
+            }
+            if (!landscape && ModalRoute.of(context)!.canPop) {
+              Navigator.pop(context);
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const SettingsScreen(),
+              ),
+            );
           },
         ),
       ],

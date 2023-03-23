@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/rendering.dart';
-import 'package:gpt_3_chat/secrets.dart';
+import 'package:gpt_3_chat/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:gpt_3_chat/extensions/string.dart';
 
@@ -29,7 +29,7 @@ class AIController {
     final response = await http.post(
       Uri.parse('https://api.openai.com/v1/completions'),
       headers: {
-        'Authorization': 'Bearer ${Secrets.token}',
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
       body: json.encode({
@@ -42,8 +42,7 @@ class AIController {
     );
 
     if (response.statusCode != 200) {
-      throw Exception(
-          'Failed to load response, Error ${response.statusCode}: ${response.body}');
+      throw Exception(json.decode(response.body)['error']['message']);
     }
 
     debugPrint(response.body);
@@ -56,11 +55,13 @@ class AIController {
 
 class AiResponse {
   final String text;
+  final bool isError;
   final int promptTokens;
   final int completionTokens;
   final int totalTokens;
 
   AiResponse({
+    this.isError = false,
     required this.text,
     required this.promptTokens,
     required this.completionTokens,

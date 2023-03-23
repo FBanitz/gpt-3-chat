@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gpt_3_chat/extensions/widget.dart';
 import 'package:gpt_3_chat/styles/colors.dart';
 import 'package:gpt_3_chat/widgets/drawer.dart';
 
@@ -15,25 +14,28 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    
-    bool islandscape = MediaQuery.of(context).orientation == Orientation.landscape && MediaQuery.of(context).size.width > 700;
+    bool islandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape &&
+            MediaQuery.of(context).size.width > 725;
     return Scaffold(
       backgroundColor: AppColors.background,
-      drawer: !islandscape ? const Drawer(
-        child: AppDrawer(landscape: false),
-      ) : null,
-
+      drawer: !islandscape
+          ? const Drawer(
+              child: AppDrawer(landscape: false),
+            )
+          : null,
       appBar: AppBar(
-        leading: !islandscape ? Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(
-              Icons.menu,
-              color: AppColors.primary,
-            ),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ) : null,
+        leading: !islandscape
+            ? Builder(
+                builder: (context) => IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: AppColors.primary,
+                  ),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
+              )
+            : null,
         title: const Text(
           'GPT-3 Chat App',
           style: TextStyle(
@@ -44,12 +46,14 @@ class AppScaffold extends StatelessWidget {
       ),
       body: Row(
         children: [
-          if(islandscape) SizedBox(
-            width: <double>[(MediaQuery.of(context).size.width * 0.2), 300].reduce(min),
-            child: const AppDrawer(landscape: true),
-          ),
+          if (islandscape)
+            SizedBox(
+              width: <double>[(MediaQuery.of(context).size.width * 0.2), 300]
+                  .reduce(min),
+              child: const AppDrawer(landscape: true),
+            ),
           Expanded(
-            child:body,
+            child: body,
           ),
         ],
       ),

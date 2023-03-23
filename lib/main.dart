@@ -4,6 +4,8 @@ import 'package:gpt_3_chat/styles/colors.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+String token = "";
+
 void main() async {
   Intl.defaultLocale ??= 'fr_FR';
   await initializeDateFormatting(

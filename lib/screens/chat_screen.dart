@@ -23,7 +23,7 @@ class ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
   final _conversationController = ConversationController();
 
-  void _sendMessage() {
+  Future<void> _sendMessage() async {
     callback() {
       setState(() {});
       Future.delayed(
@@ -38,11 +38,10 @@ class ChatScreenState extends State<ChatScreen> {
       );
     }
 
-    _conversationController.sendMessage(
+    await _conversationController.sendMessage(
       _messageController.text,
       callback: callback,
     );
-
     callback();
     _messageController.clear();
   }
@@ -221,7 +220,9 @@ class ChatScreenState extends State<ChatScreen> {
                         ? AppColors.secondaryText
                         : AppColors.primary,
                   ),
-                  onPressed: _sendMessage,
+                  onPressed: () {
+                    _sendMessage();
+                  },
                 ),
               ],
             ),
