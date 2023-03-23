@@ -1,8 +1,10 @@
 # GPT 3 Chat 🧠 💬
 *An app to chat w/ the openAI's davinci-003 GPT-3 model*
 
+![Header Screenshot](/screenshots/windows-landscape-1.png?raw=true "Header Screenshot")
+
 ## About ℹ
-This is a AI chat application created using Flutter/Dart and the OpenAi's API. It is designed to provide an interactive and engaging experience for users. It is greately inspired by [Chat GPT](https://chat.openai.com) but, because this app uses the OpenAi's API, it is much more responsive and less prone to shortages of the OpenAi's servers, and is available for Android, Windows and Web (see [Download](#download) and [Setup](#setup)). The user interface is open source, so you can see how it works and even contribute to it ! (Note that the OpenAI API is not, see their [Terms of use](https://openai.com/policies/terms-of-use))
+This is a AI chat application created using Flutter/Dart and the davinci-003 model via the OpenAi's API. It is designed to provide an interactive and engaging experience for users. It is greately inspired by [Chat GPT](https://chat.openai.com) but, because this app uses the OpenAi's API, it is much more responsive and less prone to shortages of the OpenAi's servers, and is available for Android, Windows and Web (see [Download](#download) and [Setup](#setup)). The user interface is open source, so you can see how it works and even contribute to it ! (Note that the OpenAI API is not, see their [Terms of use](https://openai.com/policies/terms-of-use))
 
 No data is collected or stored by the application. Data is stored in cache locally on the user's device and is purged when the application is closed.
 
@@ -17,3 +19,12 @@ Go to 'settings' and enter your API key. You can get one here: https://platform.
 Note that I do not provide any API keys, so you will have to get one yourself. I know that I have leaked a key int this repo in the past, but I have since revoked it, so no free key for you this time, nice try 😋.
 
 Also, the API key is not stored in the app, so you will have to enter it every time you open the app.
+
+## Screenshots 📸
+
+![Screenshot 1](/screenshots/windows-portrait-1.png?raw=true "Screenshot 1")
+
+![Screenshot 2](/screenshots/windows-landscape-1.png?raw=true "Screenshot 2")
+
+![Screenshot 3](/screenshots/windows-landscape-2.png?raw=true "Screenshot 3")
+

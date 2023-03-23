@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gpt_3_chat/extensions/widget.dart';
-import 'package:gpt_3_chat/screens/chat_screen.dart';
 import 'package:gpt_3_chat/screens/settings_screen.dart';
 import 'package:gpt_3_chat/styles/colors.dart';
 
@@ -16,12 +15,6 @@ class AppDrawer extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        const DrawerHeader(
-          decoration: BoxDecoration(
-            color: AppColors.secondary,
-          ),
-          child: Text('Drawer Header'),
-        ),
         ListTile(
           leading: const Icon(Icons.chat),
           iconColor: AppColors.primary,
