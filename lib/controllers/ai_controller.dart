@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/rendering.dart';
 import 'package:gpt_3_chat/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'package:gpt_3_chat/extensions/string.dart';
@@ -11,13 +12,20 @@ class AIController {
   // final String defaultStop;
 
   AIController({
-    this.model = "text-davinci-003", 
-    this.defautTemperature = 0.5, 
-    this.defaultMaxTokens = 256, 
+    this.model = "text-davinci-003",
+    this.defautTemperature = 0.5,
+    this.defaultMaxTokens = 256,
     // this.defaultStop = "\n",
   });
 
-  Future<String> generateText(String prompt, [double? temperature, int? maxTokens, String? stop]) async {
+  Future<AiResponse> generateText(
+    String prompt, [
+    double? temperature,
+    int? maxTokens,
+    String? stop,
+  ]) async {
+    debugPrint(prompt);
+
     final response = await http.post(
       Uri.parse('https://api.openai.com/v1/completions'),
       headers: {
@@ -34,25 +42,37 @@ class AIController {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to load response, Error ${response.statusCode}: ${response.body}');
+      throw Exception(
+          'Failed to load response, Error ${response.statusCode}: ${response.body}');
     }
 
-    String aiResponse = response.body.fromJson['choices'][0]['text'];
-    
-    while (
-      aiResponse.startsWith('\n') 
-      || aiResponse.startsWith(' ')
-    ) {
-      aiResponse = aiResponse.substring(1);
-    }
+    debugPrint(response.body);
 
-    while (
-      aiResponse.endsWith('\n') 
-      || aiResponse.endsWith(' ')
-    ) {
-      aiResponse = aiResponse.substring(0, aiResponse.length - 1);
-    }
+    AiResponse aiResponse = AiResponse.fromJson(response.body.fromJson);
 
     return aiResponse;
+  }
+}
+
+class AiResponse {
+  final String text;
+  final int promptTokens;
+  final int completionTokens;
+  final int totalTokens;
+
+  AiResponse({
+    required this.text,
+    required this.promptTokens,
+    required this.completionTokens,
+    required this.totalTokens,
+  });
+
+  factory AiResponse.fromJson(Map<String, dynamic> json) {
+    return AiResponse(
+      text: (json['choices'][0]['text'] as String).cleanMessage,
+      promptTokens: json['usage']['prompt_tokens'],
+      completionTokens: json['usage']['completion_tokens'],
+      totalTokens: json['usage']['total_tokens'],
+    );
   }
 }

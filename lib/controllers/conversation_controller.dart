@@ -1,34 +1,46 @@
+import 'package:gpt_3_chat/extensions/string.dart';
 import 'package:gpt_3_chat/models/message.dart';
+import 'package:gpt_3_chat/models/user.dart';
 
 import 'ai_controller.dart';
 
 class ConversationController {
   final List<Message> _conversation = [];
   final _aiController = AIController();
+  final User ai = User.ai;
+  final User user = User(name: "user", role: UserRole.user);
+  Map<String, int> usage = {
+    'prompt_tockens': 0,
+    'completion_tokens': 0,
+    'total_tockens': 0,
+  };
 
   void sendMessage(String message, {Function? callback}) {
-    _conversation.add(
-      Message(
-        sender: 'user',
-        text: message,
-        timestamp: DateTime.now(),
-      )
-    );
-    _conversation.add(
-      Message(
-        sender: 'ai',
-        text: '...',
-        waiting: true,
-        timestamp: DateTime.now(),
-      )
-    );
+    _conversation.add(Message(
+      sender: user,
+      text: message.cleanMessage,
+      timestamp: DateTime.now(),
+    ));
+
+    _conversation.add(Message(
+      sender: ai,
+      text: '',
+      waiting: true,
+      timestamp: DateTime.now(),
+    ));
+
     String prompt = "";
-    for (Message message in _conversation){
-      prompt += "${message.sender}: ${message.text}\n";
+
+    for (Message message in _conversation) {
+      prompt += "${message.sender.name}: ${message.text}\n";
     }
-    prompt += "ai: ";
     _aiController.generateText(prompt, 0.5, 2048).then((response) {
-      editLastAiMessage(response);
+      editLastAiMessage(response.text);
+      usage['prompt_tockens'] =
+          response.promptTokens + usage['prompt_tockens']!;
+      usage['completion_tokens'] =
+          response.completionTokens + usage['completion_tokens']!;
+      usage['total_tockens'] = response.totalTokens + usage['total_tockens']!;
       callback?.call();
     });
   }
@@ -37,18 +49,16 @@ class ConversationController {
     _conversation.removeAt(index);
   }
 
-  void editLastAiMessage (String message) {
+  void editLastAiMessage(String message) {
     for (int i = _conversation.length - 1; i >= 0; i--) {
-      if (_conversation[i].sender == 'ai') {
+      if (_conversation[i].sender.role == UserRole.ai) {
         delete(i);
-        _conversation.add(
-          Message(
-            sender: 'ai',
-            text: message,
-            waiting: false,
-            timestamp: DateTime.now(),
-          )
-        );
+        _conversation.add(Message(
+          sender: ai,
+          text: message,
+          waiting: false,
+          timestamp: DateTime.now(),
+        ));
         break;
       }
     }

@@ -1,7 +1,9 @@
+import 'package:gpt_3_chat/models/user.dart';
+
 class Message {
   final String text;
   final DateTime timestamp;
-  final String sender;
+  final User sender;
   final bool waiting;
 
   Message({
