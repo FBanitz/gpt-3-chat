@@ -6,7 +6,7 @@
 ## About ℹ
 This is a AI chat application created using Flutter/Dart and the davinci-003 model via the OpenAi's API. It is designed to provide an interactive and engaging experience for users. It is greately inspired by [Chat GPT](https://chat.openai.com) but, because this app uses the OpenAi's API, it is much more responsive and less prone to shortages of the OpenAi's servers, and is available for Android, Windows and Web (see [Download](#download) and [Setup](#setup)). The user interface is open source, so you can see how it works and even contribute to it ! (Note that the OpenAI API is not, see their [Terms of use](https://openai.com/policies/terms-of-use))
 
-No data is collected or stored by the application. Data is stored in cache locally on the user's device and is purged when the application is closed.
+No data is collected or stored by the application. Data is stored in cache locally on the user's device and is purged when the application is closed (⚠️ May be subject to changes in future releases).
 
 I am not affiliated with OpenAI in any way and I am not in any way responsible for the data processed and potentialy stored by OpenAi or any misuse of the API by the user. This is just a fun project I made for fun.
 
