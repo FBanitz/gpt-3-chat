@@ -20,7 +20,7 @@ Go to 'settings' and enter your API key. You can get one here: https://platform.
 
 Note that I do not provide any API keys, so you will have to get one yourself. I know that I have leaked a key int this repo in the past, but I have since revoked it, so no free key for you this time, nice try 😋.
 
-Also, the API key is not stored in the app, so you will have to enter it every time you open the app.
+Also, as mentioned above, the API key is not stored in the app, so you will have to enter it every time you open the app.
 
 ## Screenshots 📸
 
